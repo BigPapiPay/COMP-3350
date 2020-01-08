@@ -6,7 +6,8 @@ WriteInt PROTO
 WriteString PROTO
 ExitProcess PROTO, dwExitCode: DWORD
 
-TITLE Arrays	(Homework 6 Question 2)
+TITLE Arrays
+INCLUDELIB C:\Irvine\Irvine.32
 
 .data
 	PromptUser BYTE "Please enter a value: ", 0
