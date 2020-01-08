@@ -1,0 +1,87 @@
+.386
+.model flat, stdcall
+.stack 4096
+ExitProcess PROTO, dwExitCode: DWORD
+Crlf PROTO
+WriteHexB PROTO
+WriteString PROTO
+
+TITLE H8Q5
+INCLUDELIB C:\Irvine\Irvine32.lib
+
+.data
+	string1 BYTE "Apple array = ", 0
+	string2 BYTE "Berry array = ", 0
+	string3 BYTE "Cherry array = ", 0
+
+	apple QWORD 1111222233334444h
+	berry QWORD 13572468ABCD0000h
+	cherry QWORD ?
+.code
+main PROC
+	mov esi, OFFSET apple
+	mov edi, OFFSET berry
+	mov ebx, OFFSET cherry
+	mov ecx, 8
+	clc
+
+	EXTADD:
+		mov ax, [esi]
+		adc ax, [edi]
+		pushfd
+		mov [ebx], ax
+		add esi, 2
+		add edi, 2
+		add ebx, 2
+		popfd
+	LOOP EXTADD
+
+	mov byte ptr [ebx], 0
+	adc byte ptr [ebx], 0
+
+	mov edx, OFFSET string1	; Print for Apple
+	Call WriteString
+	mov esi, offset apple
+	mov ecx, 8
+	add esi, ecx
+	sub esi, type byte
+	mov ebx, type byte
+
+	A1: 
+		mov al, [esi]
+		Call WriteHexB
+		sub esi, type byte
+	LOOP A1
+	call Crlf
+
+	mov edx, OFFSET string2	; Print for Berry 
+	Call WriteString
+	mov esi, OFFSET berry
+	mov ecx, 8
+	add esi, ecx
+	sub esi, type byte
+	mov ebx, type byte
+
+	B1:
+		mov al, [esi]
+		Call WriteHexB
+		sub esi, type byte
+	LOOP B1
+	call Crlf
+	
+	mov edx, OFFSET string3	; Print for Cherry
+	Call WriteString
+	mov esi, OFFSET cherry
+	mov ecx, 8
+	add esi, ecx
+	sub esi, type byte
+	mov ebx, type byte
+
+	C1:
+		mov al, [esi]
+		Call WriteHexB
+		sub esi, type byte
+	LOOP C1
+	call Crlf
+main ENDP
+END main
