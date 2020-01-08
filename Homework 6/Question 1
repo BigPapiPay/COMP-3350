@@ -5,6 +5,7 @@ ExitProcess PROTO, dwExitCode: DWORD
 WriteChar PROTO
 
 Title Arithmetic Expression
+INCLUDELIB C:\Irvine\Irvine.32
 
 .data
 	asterisk BYTE 2Ah
