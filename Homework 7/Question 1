@@ -1,0 +1,50 @@
+.386
+.model flat,stdcall
+.stack 4096
+WriteInt PROTO
+WriteString PROTO
+ExitProcess PROTO, dwExitCode: DWORD
+Crlf PROTO
+
+.data
+	arrayOdd BYTE 1, 3, 5, 7, 9, 11, 13, 15
+	arrayEven BYTE 2, 4, 6, 8, 10, 12, 14, 16
+	arrayMix3 BYTE 9, 8, 7, 6, 5, 4, 3, 2
+	arrayMix4 BYTE 1, 3, 5, 7, 9, 2, 8
+	arrayMix5 BYTE 13, 43, 87, 56, 99, 77, 17
+	arrayMix6 BYTE 11, 13, 15, 17, 19, 21, 22
+	foundEven BYTE "Even integer found ", 0
+	nofoundEven BYTE "No even integer found", 0
+	location BYTE ", at index ", 0
+.code
+start PROC
+	mov esi, 0
+	mov ebx, 2
+	mov ecx, LENGTHOF arrayOdd	; To test other arrays change this
+A1: 
+	mov eax, 0
+	mov edx, 0
+	mov al, arrayOdd[esi]		; To test other arrays change this
+	idiv ebx
+	cmp edx, 0
+	je evenFound				; If equal to 0 then it will go to evenFound, otherwise evenNotFound
+	add esi, 1
+	loop A1
+evenNotFound:
+	mov edx, OFFSET nofoundEven
+	call WriteString
+	call Crlf
+	INVOKE ExitProcess, 0
+
+evenFound:
+	mov edx, OFFSET foundEven
+	call WriteString
+	mov al, arrayOdd[esi]		; To test other arrays change this
+	call WriteInt
+	mov edx, OFFSET location
+	call WriteString
+	mov eax, esi
+	call WriteInt
+	INVOKE ExitProcess, 0
+start ENDP
+END start
