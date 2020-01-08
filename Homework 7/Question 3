@@ -1,0 +1,66 @@
+.386
+.model flat,stdcall
+.stack 4096
+WriteString PROTO
+WriteInt PROTO
+ReadInt PROTO
+ExitProcess PROTO, dwExitCode: DWORD
+
+TITLE Homework 7 Q3
+
+.data
+	firstSensor BYTE "Enter an integer value: ", 0
+	secondSensor BYTE "Enter an integer calue: ", 0
+	aOne BYTE "Agree", 0
+	aTwo BYTE "Disagree", 0
+	aThree BYTE "Take Action", 0
+	valueOne SDWORD ?
+	valueTwo SDWORD ?
+	diff SDWORD ?
+
+.code
+start PROC
+	mov edx, OFFSET firstSensor		; Reads the value of the first sensor
+	call WriteString
+	call ReadInt
+	mov ebx, eax
+	mov edx, OFFSET secondSensor	; Reads the value of the second sensor
+	call WriteString
+	call ReadInt
+	mov edx, eax
+	mov valueTwo, edx
+	sub eax, ebx
+	mov diff, eax
+	cmp diff, -5		; If they are different by -5 then it will go to condition2
+	jle cond2
+	cmp diff, 5		; If they are different by +5 then it will go to condition1
+	jle cond1
+	jmp cond4		; If it doesnt fit into the other two categories it prints "Disagree"
+
+cond1:				; Difference is +5
+	cmp ebx, 45		; Compares if the value is greater than 45. If so it goes to cond3
+	jg cond3		; Based off of what was written in the question i didnt use jge because it says "more than 45"
+	cmp valueTwo, 45
+	mov edx, OFFSET aOne	; Otherwise it prints out "Agree"
+	call WriteString
+	ret
+cond2:				; They have a differne of -5
+	mov edx, OFFSET aOne	; Only goes here if the difference is -5. Prints out "Agree"
+	call WriteString
+	ret
+cond3:				; First value is greater than 45
+	cmp valueTwo, 45	; If greater than 45, go to cond5
+	jg cond5
+	mov edx, OFFSET aOne
+	call WriteString
+	ret
+cond4:				; Difference is greater than 5 or -5
+	mov edx, OFFSET aTwo
+	call WriteString
+	ret
+cond5:
+	mov edx, OFFSET aThree
+	call WriteString
+	ret
+start ENDP
+END start
