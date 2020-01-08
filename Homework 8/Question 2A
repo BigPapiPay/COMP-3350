@@ -1,0 +1,16 @@
+TITLE H8Q2A
+INCLUDE C:\Irvine\Irvine32.lib
+.code
+main PROC
+	mov eax,2	
+	mov edx,ax
+	shl edx,4	
+	mov edx,ax
+	shl edx,3	
+	shl eax,2	
+	add eax, edx	
+	add eax, edx
+	mov edx, ebx
+	INVOKE ExitProcess, 0
+main ENDP
+END main
