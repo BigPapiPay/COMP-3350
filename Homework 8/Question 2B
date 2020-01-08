@@ -1,0 +1,17 @@
+.386
+.model flat, stdcall
+.stack 4096
+ExitProcess PROTO, dwExitCode: DWORD
+WriteHex PROTO
+
+Title H8Q2B
+INCLUDELIB C:\Irvine\Irvine.32
+
+.code
+main PROC
+	mov eax, 1234ABCDh
+	shr eax, 16
+	call WriteHex
+	INVOKE exitProcess, 0
+main ENDP
+END main
