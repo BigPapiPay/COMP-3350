@@ -8,6 +8,7 @@ WriteString PROTO
 ExitProcess PROTO, dwExitCode: DWORD
 
 Title Compares, Procedures
+INCLUDELIB C:\Irvine\Irvine.32
 
 .data
 	promptUser BYTE "Please enter a value: ", 0
