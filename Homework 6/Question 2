@@ -1,0 +1,29 @@
+.386
+.model flat,stdcall
+.stack 4096
+ReadInt PROTO
+WriteInt PROTO
+WriteString PROTO
+ExitProcess PROTO, dwExitCode: DWORD
+
+TITLE Arrays	(Homework 6 Question 2)
+
+.data
+	PromptUser BYTE "Please enter a value: ", 0
+.code
+start PROC
+	mov ecx, 6
+A1:						; Loop for prompting the user to input values. 
+	mov edx, OFFSET PromptUser
+	call WriteString
+	call ReadInt
+	push eax
+loop A1
+	mov ecx, 6
+A2:						; Loop for displaying the value. 
+	pop eax
+	call WriteInt
+loop A2
+	INVOKE ExitProcess, 0
+start ENDP
+END start
