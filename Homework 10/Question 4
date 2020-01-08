@@ -1,0 +1,46 @@
+.386
+.model flat,stdcall
+.stack 4096
+WriteString PROTO
+ReadString PROTO
+Crlf PROTO
+WriteInt PROTO
+WaitMsg PROTO
+ExitProcess PROTO, dwExitCode: DWORD
+
+TITLE HW10Q4
+INCLUDELIB C:\Irvine\Irvine32.lib
+
+.data
+string1 BYTE "I do not enjoy this class very much at all :/", 0
+sought_String BYTE ":/", 0
+FO BYTE "The characters were found", 0
+NF BYTE "The characters were not found", 0
+
+.code
+main PROC
+	mov edx, OFFSET string1
+	call WriteString
+	call Crlf
+	mov edx, OFFSET sought_String
+	call WriteString
+	call Crlf
+	mov edi, OFFSET string1
+	mov ax, 'fu'
+	mov ecx, LENGTHOF string1
+	cld
+	repne scasb
+	jnz NOF
+	dec edi
+	mov edx, OFFSET FO
+	call WriteString
+	call Crlf
+	jmp ENDING
+NOF:
+	mov edx, OFFSET NF
+	call WriteString
+	call Crlf
+ENDING:
+	INVOKE ExitProcess, 0
+main ENDP
+END main
