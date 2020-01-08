@@ -1,0 +1,48 @@
+.386
+.model flat, stdcall
+.stack 4096
+ExitProcess PROTO, dwExitCode: DWORD
+WriteInt PROTO
+WriteString PROTO
+ReadInt PROTO
+Clrscr PROTO
+Crlf PROTO
+WriteChar PROTO
+
+TITLE H8Q4
+INCLUDELIB C:\Irvine\Irvine32.lib
+
+.data
+	s1 BYTE "Please input your value for AX: ", 0
+	s2 BYTE "The value of AX is: ", 0
+.code
+main PROC
+	mov edx, OFFSET s1
+	call WriteString
+	call ReadInt
+	mov edx, OFFSET s2
+	call WriteString
+	call movtoBin
+	INVOKE ExitProcess, 0
+main ENDP
+
+movtoBin PROC
+	mov ecx, 16
+A1: 
+	shl ax, 1
+	jc A2
+	push ax
+	mov al, '0'
+	call WriteChar
+	pop ax
+	jmp A3
+A2:
+	push ax
+	mov al, '1'
+	call WriteChar
+	pop ax
+A3:
+	loop A1
+	ret
+movtoBin ENDP
+END main
