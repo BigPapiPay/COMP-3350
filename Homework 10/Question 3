@@ -1,0 +1,36 @@
+.386
+.model flat,stdcall
+.stack 4096
+WriteString PROTO
+WriteInt PROTO
+Crlf PROTO
+ExitProcess PROTO,dwExitCode: DWORD
+
+TITLE HW10Q4
+INCLUDELIB C:\Irvine\Irvine32.lib
+
+COORD STRUCT
+	X WORD ?
+	Y WORD ?
+	Z WORD ?
+COORD ENDS
+
+.data
+	set COORD <1234,4,7>,<999,8,4>,<619,1,8>,<420,9,6>	
+	next_line BYTE "X = ", 0
+.code
+main proc
+	mov eax, 0	; Clears eax for the next value
+	mov ecx, 4	; The number of sets of coordinates in the variable sets
+	mov esi, 0	; Starting point
+	mov edx, OFFSET next_line	; Points to the location of next_line
+A1:
+	mov ax, set[esi].X
+	call WriteString	; Writes X = 
+	call WriteInt		; Writes the actual value of x for each array
+	call Crlf			; Clears and fills the line
+	add esi, TYPE COORD
+	loop A1
+	INVOKE ExitProcess, 0
+main endp
+end main
