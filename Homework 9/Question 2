@@ -1,0 +1,123 @@
+.386
+.model flat,stdcall
+.stack 4096
+TITLE HW9Q1
+INCLUDELIB C:\Irvine\Irvine32.lib
+WriteString PROTO
+WriteInt PROTO
+WriteHexB PROTO
+Crlf PROTO
+ExitProcess PROTO, dwExitCode: DWORD
+
+
+.data
+	number = 5
+	myAuburnID BYTE 09h,08h,07h,06h,05h
+	myAuburnIDRev BYTE 5 dup(?)
+	final BYTE number DUP(?)
+	string1 BYTE "myAuburnID: ",0
+	string2 BYTE "myAuburnIdRev: ", 0
+	string3 BYTE "Final Result: ", 0
+
+.code
+main PROC
+	push OFFSET myAuburnID
+	push number
+	mov edx, OFFSET string1
+	call WriteString
+	call Crlf
+	call writeArray
+
+	push OFFSET myAuburnID
+	push OFFSET myAuburnIDRev
+	push number
+	call flipSub
+
+	call Crlf
+	push OFFSET myAuburnIDRev
+	push OFFSET number
+	mov edx, OFFSET string2
+	call WriteString
+	call Crlf
+	call WriteArray
+
+	mov ebx, OFFSET final
+	mov esi, OFFSET myAuburnID
+	mov edi, OFFSET myAuburnIDRev
+	mov ecx, number
+	call ExtendSub
+
+	call Crlf
+	push OFFSET final
+	push number
+	mov edx, OFFSET string3
+	call WriteString
+	call Crlf
+	call writeArray
+INVOKE ExitProcess, 0
+main ENDP
+
+writeArray PROC
+	push ebp
+	mov ebp, esp
+	mov esi, [ebp+12]
+	mov ecx, number
+	mov ebx, TYPE BYTE
+A1:
+	movzx eax, BYTE PTR [esi]
+	call WriteHexB
+	call crlf
+	inc esi
+	loop A1
+
+	pop ebp
+
+	ret 8
+writeArray ENDP
+	
+flipSub PROC
+	push ebp
+	mov ebp, esp
+	mov edx, [ebp+16]
+	mov esi, [ebp+12]
+	mov ecx, [ebp+8]
+	mov ebx, 0
+	add edx, 4
+B1:
+	movzx ax, BYTE PTR [edx]
+	rol al, 4
+	shld bx, ax, 16
+	mov [esi], BYTE PTR bl
+	inc esi
+	dec edx
+	loop B1
+	
+	pop ebp
+
+	ret 8
+flipSub ENDP
+
+ExtendSub PROC
+	pushad
+	clc
+A1:
+	mov al, [esi]
+	sub al, [edi]
+	das
+
+	pushfd
+
+	mov [ebx], al
+	add esi, 1
+	add edi, 1
+	add ebx, 1
+	popfd
+
+	loop A1
+
+	mov BYTE PTR [ebx], 0
+	sbb BYTE PTR [ebx], 0
+	popad
+	ret
+ExtendSub ENDP
+END main
