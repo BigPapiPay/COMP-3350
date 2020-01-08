@@ -7,10 +7,11 @@ ReadInt PROTO
 ExitProcess PROTO, dwExitCode: DWORD
 
 TITLE Homework 7 Q3
+INCLUDELIB C:\Irvine\Irvine.32
 
 .data
 	firstSensor BYTE "Enter an integer value: ", 0
-	secondSensor BYTE "Enter an integer calue: ", 0
+	secondSensor BYTE "Enter an integer value: ", 0
 	aOne BYTE "Agree", 0
 	aTwo BYTE "Disagree", 0
 	aThree BYTE "Take Action", 0
