@@ -1,0 +1,47 @@
+.386
+.model flat,stdcall
+.stack 4096
+WriteString PROTO
+ReadString PROTO
+Crlf PROTO
+WriteInt PROTO
+ExitProcess PROTO, dwExitCode: DWORD
+
+TITLE HW10Q2
+INCLUDELIB C:\Irvine\Irvine32.lib
+
+.data
+	var1 BYTE 100 dup(0), 0
+	var1_length = $ - var1
+	string1 BYTE "Please input any number of strings seperated with a space: ", 0
+	string2 BYTE "The length of the inputted strings is: ", 0
+.code
+array_length_counter PROC, strr:DWORD
+	xor eax, eax
+	mov esi, strr
+LOOPER:
+	mov bl, [esi]
+	cmp bl, 0
+	jz Return
+	inc eax
+	inc esi
+	jmp LOOPER
+Return:
+	ret
+array_length_counter endp
+
+main PROC
+	mov edx, OFFSET string1
+	call WriteString
+	mov edx, OFFSET var1
+	mov ecx, var1_length
+	call ReadString
+	mov edx, OFFSET string2
+	call WriteString
+	push OFFSET var1
+	call array_length_counter
+	add esp, 4
+	call WriteInt
+	INVOKE ExitProcess, 0
+main ENDP
+END main
