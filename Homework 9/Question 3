@@ -1,0 +1,72 @@
+.386
+.model flat,stdcall
+.stack 4096
+TITLE HW9Q1
+INCLUDELIB C:\Irvine\Irvine32.lib
+WriteString PROTO
+WriteInt PROTO
+Crlf PROTO
+ExitProcess PROTO, dwExitCode: DWORD
+
+.data
+baseA = 8
+heightA = 14
+firstTwoTerms DWORD 0
+cloForm DWORD 0
+sOne BYTE "The area of the first two terms is: ", 0
+sTwo BYTE "The area of the closed form series is: ", 0
+sThree BYTE "The difference is: ", 0
+
+.code
+main PROC
+	mov edx, OFFSET sOne
+	call WriteString
+	call calA
+	call WriteInt
+	call crlf
+
+	mov edx, OFFSET sTwo
+	call WriteString
+	call calB
+	call WriteInt
+	call Crlf
+
+	mov edx, OFFSET sThree
+	call WriteString
+	call calC
+	call WriteInt
+	call Crlf
+INVOKE ExitProcess, 0
+main ENDP
+calA PROC		; Calculates the area of isosceles triangle A
+	mov eax, baseA
+	imul eax, heightA
+	shr eax, 1
+	mov ebx, baseA
+	shr ebx, 1
+	imul ebx, heightA
+	shr ebx, 2
+	add eax, ebx
+	mov firstTwoTerms, eax
+	ret
+calA ENDP
+
+calB PROC		; Calculates the area of isosceles triangle B
+	mov edx, 0
+	mov eax, baseA
+	imul eax, heightA
+	shr eax, 1
+	shl eax, 2
+	mov ebx, 3
+	idiv ebx
+	mov cloForm, eax
+	ret
+calB ENDP
+
+calC PROC		; Calculates the area of isosceles triangle C
+	mov eax, cloForm
+	sub eax, firstTwoTerms
+	ret
+calC ENDP
+END main
+	
