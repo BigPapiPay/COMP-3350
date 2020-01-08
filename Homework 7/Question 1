@@ -5,7 +5,7 @@ WriteInt PROTO
 WriteString PROTO
 ExitProcess PROTO, dwExitCode: DWORD
 Crlf PROTO
-
+INCLUDELIB C:\Irvine\Irvine.32
 .data
 	arrayOdd BYTE 1, 3, 5, 7, 9, 11, 13, 15
 	arrayEven BYTE 2, 4, 6, 8, 10, 12, 14, 16
